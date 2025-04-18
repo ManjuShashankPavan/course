@@ -18,7 +18,6 @@ import Mockinterview from "./components/Mockinterview";
 import Certificate from "./components/Certificate";
 import LearningCourses from "./Courses/LearningCourses";
 import Frontend from "./Courses/Frontend/Frontend.jsx";
-import HTML from "./Courses/Frontend/HTML.jsx";
 import Java from "./Courses/Backend/Java.jsx";
 // import Basic from "./Aptitude/Basic.jsx";
 // import Intermediate from "./Aptitude/Intermediate";
@@ -83,7 +82,6 @@ export default function App() {
             <Route path="/Certificate" element={<Certificate />} />
             <Route path="/LearningCourses" element={<LearningCourses />} />
             <Route path="/Frontend" element={<Frontend />} />
-            <Route path="/HTML" element={<HTML />} />
             <Route path="/Java" element={<Java />} />
             
             /* Updated Aptitude Test Routes */
