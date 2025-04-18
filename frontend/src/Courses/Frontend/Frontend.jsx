@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const LearningCourses = () => {
   const courseData = {
@@ -9,17 +9,48 @@ const LearningCourses = () => {
         {
           title: "Introduction to HTML",
           content: "HTML stands for HyperText Markup Language. It is used to create the structure of web pages.",
-          tips: ["HTML documents have a .html extension", "Start with <!DOCTYPE html>"]
+          tips: [
+            "HTML documents have a .html extension",
+            "Start with <!DOCTYPE html>"
+          ],
+          quiz: [
+            {
+              question: "What does HTML stand for?",
+              options: ["Hyper Text Markup Language", "Hyperlinks Text Markup Language", "Home Tool Markup Language"],
+              answer: "Hyper Text Markup Language"
+            }
+          ],
+          nextCourse: 'css'
         },
         {
           title: "HTML Tags",
           content: "Common tags include <p>, <h1>, <a>, <div>, and <img>.",
-          tips: ["<h1> is for main headings", "Use semantic tags like <header> and <footer>"]
+          tips: [
+            "<h1> is for main headings",
+            "Use semantic tags like <header> and <footer>"
+          ],
+          quiz: [
+            {
+              question: "What tag is used for a paragraph?",
+              options: ["<p>", "<div>", "<h1>"],
+              answer: "<p>"
+            }
+          ]
         },
         {
           title: "HTML Forms and Tables",
           content: "Forms allow user input, tables organize data.",
-          tips: ["Use <table> for tabular data only", "Form elements need name attributes"]
+          tips: [
+            "Use <table> for tabular data only",
+            "Form elements need name attributes"
+          ],
+          quiz: [
+            {
+              question: "Which tag is used to create a table?",
+              options: ["<table>", "<form>", "<input>"],
+              answer: "<table>"
+            }
+          ]
         }
       ],
       nextCourse: 'css'
@@ -30,17 +61,47 @@ const LearningCourses = () => {
         {
           title: "Introduction to CSS",
           content: "CSS stands for Cascading Style Sheets. It styles HTML elements.",
-          tips: ["CSS can be inline, internal, or external", "External CSS is preferred for maintainability"]
+          tips: [
+            "CSS can be inline, internal, or external",
+            "External CSS is preferred for maintainability"
+          ],
+          quiz: [
+            {
+              question: "What does CSS stand for?",
+              options: ["Cascading Style Sheets", "Creative Style Sheets", "Cascading Simple Sheets"],
+              answer: "Cascading Style Sheets"
+            }
+          ]
         },
         {
           title: "CSS Selectors",
           content: "Use selectors like .class, #id, or element to apply styles.",
-          tips: ["Avoid using !important", "Specificity determines which styles get applied"]
+          tips: [
+            "Avoid using !important",
+            "Specificity determines which styles get applied"
+          ],
+          quiz: [
+            {
+              question: "Which of the following is a valid class selector?",
+              options: [".class", "#id", "element"],
+              answer: ".class"
+            }
+          ]
         },
         {
           title: "Box Model and Positioning",
           content: "Understand margin, border, padding, and content.",
-          tips: ["box-sizing: border-box includes padding in width", "Position absolute removes from document flow"]
+          tips: [
+            "box-sizing: border-box includes padding in width",
+            "Position absolute removes from document flow"
+          ],
+          quiz: [
+            {
+              question: "Which property controls the layout of the box model?",
+              options: ["margin", "border", "box-sizing"],
+              answer: "box-sizing"
+            }
+          ]
         }
       ],
       nextCourse: 'javascript'
@@ -51,17 +112,47 @@ const LearningCourses = () => {
         {
           title: "Intro to JS",
           content: "JavaScript adds interactivity to websites. It runs in the browser.",
-          tips: ["JS can manipulate the DOM", "ES6 introduced many modern features"]
+          tips: [
+            "JS can manipulate the DOM",
+            "ES6 introduced many modern features"
+          ],
+          quiz: [
+            {
+              question: "Which method is used to select an element by ID in JS?",
+              options: ["getElementById()", "querySelector()", "querySelectorAll()"],
+              answer: "getElementById()"
+            }
+          ]
         },
         {
           title: "Variables and Functions",
           content: "Use let, const, and function() to write JS logic.",
-          tips: ["Prefer const over let", "Arrow functions have shorter syntax"]
+          tips: [
+            "Prefer const over let",
+            "Arrow functions have shorter syntax"
+          ],
+          quiz: [
+            {
+              question: "Which variable declaration keyword is used to prevent reassignment?",
+              options: ["let", "const", "var"],
+              answer: "const"
+            }
+          ]
         },
         {
           title: "DOM Manipulation",
           content: "Use document.querySelector() to interact with HTML.",
-          tips: ["Cache DOM elements in variables", "Event listeners handle user interactions"]
+          tips: [
+            "Cache DOM elements in variables",
+            "Event listeners handle user interactions"
+          ],
+          quiz: [
+            {
+              question: "Which method is used to attach an event listener to an element?",
+              options: ["addEventListener()", "attachEvent()", "onClick()"],
+              answer: "addEventListener()"
+            }
+          ]
         }
       ],
       nextCourse: null
@@ -76,17 +167,22 @@ const LearningCourses = () => {
     javascript: false
   });
   const [showCompletionMessage, setShowCompletionMessage] = useState(false);
+  const [quizPassed, setQuizPassed] = useState(false);
+  const [userAnswer, setUserAnswer] = useState("");
   const navigate = useNavigate();
 
   const handleCourseClick = (course) => {
     setSelectedCourse(course);
     setPage(0);
     setShowCompletionMessage(false);
+    setQuizPassed(false);
   };
 
   const handleNext = () => {
     if (page < courseData[selectedCourse].pages.length - 1) {
       setPage(prev => prev + 1);
+      setUserAnswer("");  // Reset quiz answer for next page
+      setQuizPassed(false);  // Reset quiz result
     } else {
       setCompletedCourses(prev => ({
         ...prev,
@@ -110,20 +206,25 @@ const LearningCourses = () => {
     setSelectedCourse(null);
     setPage(0);
     setShowCompletionMessage(false);
+    setQuizPassed(false);
+    setUserAnswer("");
+  };
+
+  const handleQuizAnswer = (answer) => {
+    setUserAnswer(answer);
+    const correctAnswer = courseData[selectedCourse].pages[page].quiz[0].answer;
+    if (answer === correctAnswer) {
+      setQuizPassed(true);
+    }
   };
 
   const currentCourse = selectedCourse ? courseData[selectedCourse] : null;
   const currentPage = selectedCourse ? currentCourse.pages[page] : null;
   const isLastPage = selectedCourse && page === currentCourse.pages.length - 1;
-  const isLastCourse = selectedCourse && !courseData[selectedCourse].nextCourse;
-
-  const progressPercentage = selectedCourse
-    ? ((page + 1) / currentCourse.pages.length) * 100
-    : 0;
 
   return (
-    <div className="p-6 max-w-2xl mx-auto bg-white rounded-xl shadow-md space-y-4 mt-10">
-      <h1 className="text-3xl font-bold text-center mb-6 text-indigo-700">Learning Courses</h1>
+    <div className="p-8 max-w-3xl mx-auto bg-white rounded-xl shadow-md space-y-4 mt-10">
+      <h1 className="text-3xl font-bold text-center mb-6 text-indigo-700 mt-5">Learning Courses</h1>
 
       {showCompletionMessage && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -147,17 +248,11 @@ const LearningCourses = () => {
         {Object.entries(courseData).map(([key, course]) => (
           <button
             key={key}
-            className={`px-6 py-3 rounded-lg font-medium transition-all ${selectedCourse === key
-              ? 'bg-indigo-600 text-white shadow-lg transform scale-105'
-              : completedCourses[key]
-                ? 'bg-green-500 text-white'
-                : 'bg-indigo-500 text-white hover:bg-indigo-600'}`}
+            className={`px-6 py-3 rounded-lg font-medium transition-all ${selectedCourse === key ? 'bg-indigo-600 text-white shadow-lg transform scale-105' : completedCourses[key] ? 'bg-green-500 text-white' : 'bg-indigo-500 text-white hover:bg-indigo-600'}`}
             onClick={() => handleCourseClick(key)}
           >
             {course.title}
-            {completedCourses[key] && (
-              <span className="ml-2">✓</span>
-            )}
+            {completedCourses[key] && <span className="ml-2">✓</span>}
           </button>
         ))}
       </div>
@@ -176,10 +271,8 @@ const LearningCourses = () => {
             </button>
           </div>
 
-          <div className="border border-gray-200 p-6 rounded-lg bg-gray-50">
-            <h3 className="text-lg font-medium text-indigo-600 mb-3">
-              {currentPage.title}
-            </h3>
+          <div className="border border-gray-200 p-8 rounded-lg bg-gray-50">
+            <h3 className="text-lg font-medium text-indigo-600 mb-3">{currentPage.title}</h3>
             <p className="text-gray-700 mb-4">{currentPage.content}</p>
 
             {currentPage.tips && (
@@ -194,36 +287,43 @@ const LearningCourses = () => {
             )}
           </div>
 
-          <div className="flex justify-between">
+          {currentPage.quiz && !quizPassed && (
+            <div className="bg-gray-100 p-6 mt-8 rounded-lg shadow-lg">
+              <h4 className="text-xl font-semibold text-gray-800">Quiz: {currentPage.quiz[0].question}</h4>
+              <div className="space-y-4 mt-4">
+                {currentPage.quiz[0].options.map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleQuizAnswer(option)}
+                    className={`px-4 py-2 rounded-lg text-white ${userAnswer === option ? (option === currentPage.quiz[0].answer ? 'bg-green-600' : 'bg-red-600') : 'bg-indigo-600 hover:bg-indigo-700'}`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+              {userAnswer && (
+                <p className={`mt-4 text-lg ${quizPassed ? 'text-green-600' : 'text-red-600'}`}>
+                  {quizPassed ? "Correct!" : "Try Again."}
+                </p>
+              )}
+            </div>
+          )}
+
+          <div className="flex justify-between items-center mt-4">
             <button
-              className={`px-4 py-2 rounded ${page === 0
-                ? 'bg-gray-300 cursor-not-allowed'
-                : 'bg-gray-500 text-white hover:bg-gray-600'}`}
               onClick={handlePrev}
               disabled={page === 0}
+              className={`px-4 py-2 rounded ${page === 0 ? 'bg-gray-300 text-gray-600 cursor-not-allowed' : 'bg-indigo-500 text-white hover:bg-indigo-600'}`}
             >
               Previous
             </button>
 
             <button
-              className={`px-6 py-2 rounded font-medium ${
-                isLastPage
-                  ? 'bg-green-500 text-white hover:bg-green-600'
-                  : 'bg-indigo-500 text-white hover:bg-indigo-600'
-              }`}
               onClick={handleNext}
+              className="px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600"
             >
-              {isLastPage
-                ? (isLastCourse ? 'Complete All Courses' : 'Finish & Start Next Course')
-                : 'Next'}
+              {isLastPage ? (currentCourse.nextCourse ? 'Next Course' : 'Finish') : 'Next'}
             </button>
-          </div>
-
-          <div className="w-full bg-gray-200 rounded-full h-2.5">
-            <div
-              className="bg-indigo-600 h-2.5 rounded-full transition-all duration-300"
-              style={{ width: `${progressPercentage}%` }}
-            ></div>
           </div>
         </div>
       )}
