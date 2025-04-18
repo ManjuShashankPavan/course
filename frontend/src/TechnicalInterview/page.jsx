@@ -67,7 +67,7 @@ const CodeEditor = () => {
       {/* Left - Problem Statement & Editor */}
       <div className="w-full md:w-1/2 p-6 border-b-2 md:border-b-0 md:border-r-2 border-gray-700 overflow-y-auto">
         <div className="mb-4">
-          <h2 className="text-cyan-300 text-xl mb-1">🧩 Problem</h2>
+          <h2 className="text-cyan-300 text-xl mb-1 mt-12">🧩 Problem</h2>
           {problem ? (
             <div>
               <h3 className="font-semibold">{problem.name}</h3>
@@ -89,7 +89,7 @@ const CodeEditor = () => {
 
       {/* Right - Code Editor & Output */}
       <div className="w-full md:w-1/2 p-6">
-        <h2 className="text-cyan-300 text-xl mb-2">🧠 Code Editor</h2>
+        <h2 className="text-cyan-300 text-xl mb-2 mt-12">🧠 Code Editor</h2>
         <textarea
           className="w-full h-64 p-3 bg-gray-800 text-white rounded border border-gray-600 resize-none"
           value={code}

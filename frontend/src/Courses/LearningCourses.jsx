@@ -26,7 +26,7 @@ const LearningCourses = () => {
         {/* Frontend Course Card */}
         <div 
           className="bg-white shadow-lg rounded-xl p-6 flex flex-col items-center text-center hover:bg-slate-100 relative group cursor-pointer"
-          onClick={() => navigate("/FrontendCourse")} // Navigate to Frontend Course
+          onClick={() => navigate("/Frontend")} // Navigate to Frontend Course
         >
           <img src="/FrontendIcon.jpg" alt="Frontend Course" className="w-12 h-12" />
           <h2 className="text-lg font-semibold mt-4">Frontend Development</h2>
@@ -38,7 +38,7 @@ const LearningCourses = () => {
         {/* Backend Course Card */}
         <div 
           className="bg-white shadow-lg rounded-xl p-6 flex flex-col items-center text-center hover:bg-slate-100 relative group cursor-pointer"
-          onClick={() => navigate("/BackendCourse")} // Navigate to Backend Course
+          onClick={() => navigate("/Java")} // Navigate to Backend Course
         >
           <img src="/BackendIcon.jpg" alt="Backend Course" className="w-12 h-12" />
           <h2 className="text-lg font-semibold mt-4">Backend Development</h2>

@@ -17,17 +17,17 @@ const AptitudeTestPage = () => {
     try {
       setIsLoading(true);
       const response = await fetch(`http://localhost:5000/api/questions/${level}`);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (!Array.isArray(data)) {
         throw new Error('Invalid data format received');
       }
-      
+
       setQuestions(data);
       setUserAnswers(new Array(data.length).fill(null));
     } catch (error) {
@@ -45,33 +45,31 @@ const AptitudeTestPage = () => {
 
   const handleSubmit = useCallback(() => {
     const finalScore = questions.reduce((total, q, index) => {
-      const correctAnswerText = q.options[q.answer]; // Get the text of correct answer
+      const correctAnswerText = q.options[q.answer];
       const isCorrect = userAnswers[index] === correctAnswerText;
-      
+
       console.log(`Question ${index + 1}:`, {
         userAnswer: userAnswers[index],
         correctAnswer: correctAnswerText,
         isCorrect
       });
-      
+
       return total + (isCorrect ? 1 : 0);
     }, 0);
-    
+
     setScore(finalScore);
     setIsSubmitted(true);
-    alert(`Test completed! Score: ${finalScore}/${questions.length}`);
-    navigate('/aptitude-test');
-  }, [questions, userAnswers, navigate]);
+  }, [questions, userAnswers]);
 
   useEffect(() => {
     if (timeLeft <= 0 && !isSubmitted) {
       handleSubmit();
     }
-    
+
     const timer = timeLeft > 0 && setInterval(() => {
       setTimeLeft(prev => prev - 1);
     }, 1000);
-    
+
     return () => clearInterval(timer);
   }, [timeLeft, isSubmitted, handleSubmit]);
 
@@ -123,6 +121,18 @@ const AptitudeTestPage = () => {
           Question {currentIndex + 1} of {questions.length}
         </p>
         <p className="text-lg font-semibold mt-2">Score: {score}</p>
+
+        {isSubmitted && (
+          <div className="mt-4 text-green-600 font-medium text-lg">
+            <p>Test completed! You scored {score} out of {questions.length}.</p>
+            <button
+                onClick={() => navigate('/aptitude-test')}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg"
+              >
+                Next
+              </button>
+          </div>
+        )}
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -137,6 +147,7 @@ const AptitudeTestPage = () => {
                   : 'hover:bg-gray-50 border-gray-200'
               }`}
               onClick={() => handleOptionSelect(option)}
+              disabled={isSubmitted}
             >
               {option}
             </button>
@@ -151,20 +162,21 @@ const AptitudeTestPage = () => {
         >
           {currentIndex === 0 ? 'Back' : 'Previous'}
         </button>
-        
+
         {currentIndex === questions.length - 1 ? (
           <button
             onClick={handleSubmit}
             className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-6 py-2"
+            disabled={isSubmitted}
           >
             Submit
           </button>
         ) : (
           <button
             onClick={handleNext}
-            disabled={!selectedOption}
+            disabled={!selectedOption || isSubmitted}
             className={`rounded-lg px-6 py-2 ${
-              selectedOption
+              selectedOption && !isSubmitted
                 ? 'bg-green-500 hover:bg-green-600 text-white'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}

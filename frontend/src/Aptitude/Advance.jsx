@@ -7,6 +7,7 @@ function Advance() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [score, setScore] = useState(0); // Initialize score
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -25,16 +26,28 @@ function Advance() {
   }, []);
 
   const handleNext = () => {
+    const currentQuestion = questions[currentIndex];
+
+    // Increment score if the selected option is correct
+    if (selectedOption === currentQuestion.answer) {
+      setScore(prev => prev + 1);
+    }
+
+    // Move to the next question or finish the test
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(currentIndex + 1);
-      setSelectedOption(null);
+      setSelectedOption(null); // Reset selected option for the next question
+    } else {
+      const finalScore = score + (selectedOption === currentQuestion.answer ? 1 : 0);
+      alert(`Test Completed!\nYour Score: ${finalScore} / ${questions.length}`);
+      navigate('/aptitude-test'); // Navigate to the aptitude-test page
     }
   };
 
   const handleBack = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
-      setSelectedOption(null);
+      setSelectedOption(null); // Reset selected option when going back
     } else {
       navigate('/aptitude-test');
     }
@@ -58,6 +71,11 @@ function Advance() {
         <p className="mt-2">Question {currentIndex + 1} of {questions.length}</p>
       </div>
 
+      {/* Display Score */}
+      <p className="text-right w-full max-w-md mb-4 text-gray-600 font-medium">
+        Score: {score} / {questions.length}
+      </p>
+
       <div className="w-full max-w-md mb-8">
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4">{currentQuestion.question}</h2>
@@ -70,7 +88,7 @@ function Advance() {
                     ? 'bg-blue-100 border-blue-500' 
                     : 'hover:bg-gray-50 border-gray-200'
                 }`}
-                onClick={() => setSelectedOption(option)}
+                onClick={() => setSelectedOption(option)} // Set selected option
               >
                 {option}
               </button>
@@ -79,6 +97,7 @@ function Advance() {
         </div>
       </div>
 
+      {/* Navigation Buttons */}
       <div className="flex justify-center gap-4">
         <button 
           onClick={handleBack}

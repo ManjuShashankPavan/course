@@ -7,7 +7,6 @@ import SignUpPopup from "./components/SignUpPopup";
 import Dashboard from "./pages/Dashboard";
 import ResumeUpload from "./components/ResumeUpload";
 import IntroPage from "./pages/IntroPage";
-import ContactUs from "./components/ContactUs";
 import Contact from "./components/Contact";
 import FAQs from "./components/FAQs";
 import About from "./components/About";
@@ -17,7 +16,13 @@ import Support from "./components/Support";
 import Careers from "./components/Careers";
 import Mockinterview from "./components/Mockinterview";
 import Certificate from "./components/Certificate";
-import LearningCourses from "./components/LearningCourses";
+import LearningCourses from "./Courses/LearningCourses";
+import Frontend from "./Courses/Frontend/Frontend.jsx";
+import HTML from "./Courses/Frontend/HTML.jsx";
+import CSS from "./Courses/Frontend/CSS.jsx";
+import JAVASCRIPT from "./Courses/Frontend/JAVASCRIPT.jsx";
+import Java from "./Courses/Backend/Java.jsx";
+import Terminal from "./Courses/Terminal";
 import Basic from "./Aptitude/Basic.jsx";
 import Intermediate from "./Aptitude/Intermediate";
 import Advance from "./Aptitude/Advance";
@@ -25,6 +30,7 @@ import Footer from "./components/Footer";
 import AptitudeHome from "./Aptitude/AptitudeHome"; // New component for level selection
 import AptitudeTestPage from "./Aptitude/AptitudeTestPage"; // New component for the actual test
 import TechnicalInterview from "./TechnicalInterview/page.jsx"; // Assuming this is the correct path for the Technical Interview component
+import ContactUs from "./components/ContactUs";
 
 
 export default function App() {
@@ -79,6 +85,12 @@ export default function App() {
             <Route path="/Mockinterview" element={<Mockinterview />} />
             <Route path="/Certificate" element={<Certificate />} />
             <Route path="/LearningCourses" element={<LearningCourses />} />
+            <Route path="/Frontend" element={<Frontend />} />
+            <Route path="/HTML" element={<HTML />} />
+            <Route path="/CSS" element={<CSS />} />
+            <Route path="/JAVASCRIPT" element={<JAVASCRIPT />} />
+            <Route path="/Java" element={<Java />} />
+            <Route path="/Terminal" element={<Terminal />} />
             
             /* Updated Aptitude Test Routes */
             <Route path="/aptitude-test" element={<AptitudeHome />} />
